@@ -12,7 +12,7 @@ import steven.springframework.recipe_app.services.RecipeService;
 @Controller
 public class RecipeController {
 
-  private RecipeService recipeService;
+  private final RecipeService recipeService;
 
   public RecipeController(RecipeService recipeService) {
     this.recipeService = recipeService;
