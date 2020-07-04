@@ -16,7 +16,7 @@
   <description>recipe application</description>
 
   <properties>
-    <java.version>11.0.2</java.version>
+    <java.version>11</java.version>
     <jaxb.api.version>2.3.0</jaxb.api.version>
     <javax.activation.version>1.2.0</javax.activation.version>
   </properties>
