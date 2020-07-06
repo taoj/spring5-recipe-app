@@ -9,4 +9,5 @@ import steven.springframework.recipe_app.models.Recipe;
 public interface RecipeRepo extends CrudRepository<Recipe, Long> {
 
   Optional<Recipe> findByDescription(String description);
+  Optional<Recipe> findById(Long id);
 }

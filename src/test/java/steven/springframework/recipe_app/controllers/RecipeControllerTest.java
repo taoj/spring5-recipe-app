@@ -1,7 +1,6 @@
 package steven.springframework.recipe_app.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,7 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
@@ -45,9 +43,12 @@ class RecipeControllerTest {
   @Test
   void testMockMVC() throws Exception {
     MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-    mockMvc.perform(get("/recipe/list"))
+    mockMvc.perform(get("/list"))
         .andExpect(status().isOk())
-        .andExpect(view().name("recipe/recipe_list"));
+        .andExpect(view().name("recipe_list"));
+
+    mockMvc.perform(get("/recipe/show/1")).andExpect(status().isOk())
+        .andExpect(view().name("recipe/show"));
   }
 
   @Test
@@ -65,9 +66,21 @@ class RecipeControllerTest {
     when(recipeService.getRecipes()).thenReturn(recipes);
 
 
-    assertEquals("recipe/recipe_list", recipeController.getAllRecipes(model));
+    assertEquals("recipe_list", recipeController.getAllRecipes(model));
     verify(model, times(1)).addAttribute(eq("recipes"),argumentCaptor.capture());
     Set<Recipe> setUsed = argumentCaptor.getValue();
     assertEquals(2, setUsed.size());
   }
+
+  @Test
+  void testGetById(){
+    Recipe recipe = new Recipe();
+    Long id = 1L;
+    when(recipeService.getById(id)).thenReturn(recipe);
+
+    assertEquals("recipe/show", recipeController.getById("1", model));
+    verify(recipeService, times(1)).getById(id);
+  }
+
+
 }
