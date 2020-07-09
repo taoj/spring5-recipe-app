@@ -46,6 +46,7 @@ class RecipeControllerTest {
     mockMvc.perform(get("/list"))
         .andExpect(status().isOk())
         .andExpect(view().name("recipe_list"));
+    when(recipeService.getById(1L)).thenReturn(new Recipe());
 
     mockMvc.perform(get("/recipe/show/1")).andExpect(status().isOk())
         .andExpect(view().name("recipe/show"));
