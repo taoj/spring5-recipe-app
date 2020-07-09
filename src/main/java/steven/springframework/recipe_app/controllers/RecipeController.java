@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.slf4j.Slf4j;
 
+import steven.springframework.recipe_app.models.Recipe;
 import steven.springframework.recipe_app.services.RecipeService;
 
 @Slf4j
@@ -30,7 +31,10 @@ public class RecipeController {
   @RequestMapping("recipe/show/{id}")
   public String getById(@PathVariable String id, Model model){
 
-    model.addAttribute("recipe", recipeService.getById(Long.valueOf(id)));
+    Recipe recipe = recipeService.getById(Long.valueOf(id));
+    log.info(recipe.getDescription()+" "+recipe.getSource());
+
+    model.addAttribute("recipe", recipe);
     return "recipe/show";
   }
 }

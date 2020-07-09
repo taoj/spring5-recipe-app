@@ -137,8 +137,9 @@ public class Bootstrap implements CommandLineRunner {
                                  "\n" +
                                  "\n" +
                                  "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
-//    guacNotes.setRecipe(guacRecipe);
     guacRecipe.setNotes(guacNotes);
+    guacRecipe.setServings(2);
+    guacRecipe.setSource("guac source");
 
     guacRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
     guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), teapoonUom));
