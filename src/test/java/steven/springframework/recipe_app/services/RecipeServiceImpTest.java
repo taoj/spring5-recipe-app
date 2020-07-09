@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import steven.springframework.recipe_app.converters.RecipeCommandToRecipe;
+import steven.springframework.recipe_app.converters.RecipeToRecipeCommand;
 import steven.springframework.recipe_app.models.Recipe;
 import steven.springframework.recipe_app.repositories.RecipeRepo;
 
@@ -22,13 +24,19 @@ class RecipeServiceImpTest {
   @Mock
   RecipeRepo recipeRepo;
 
+  @Mock
+  RecipeToRecipeCommand recipeToRecipeCommand;
+
+  @Mock
+  RecipeCommandToRecipe recipeCommandToRecipe;
+
   RecipeService recipeService;
 
   @BeforeEach
   void setup(){
     MockitoAnnotations.initMocks(this);
 
-    recipeService = new RecipeServiceImp(recipeRepo);
+    recipeService = new RecipeServiceImp(recipeRepo, recipeCommandToRecipe, recipeToRecipeCommand);
   }
 
   @Test
