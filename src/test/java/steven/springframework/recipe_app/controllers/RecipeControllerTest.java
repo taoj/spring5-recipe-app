@@ -1,6 +1,7 @@
 package steven.springframework.recipe_app.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,15 +13,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import steven.springframework.recipe_app.commands.RecipeCommand;
 import steven.springframework.recipe_app.models.Recipe;
 import steven.springframework.recipe_app.services.RecipeService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -48,8 +53,28 @@ class RecipeControllerTest {
         .andExpect(view().name("recipe_list"));
     when(recipeService.getById(1L)).thenReturn(new Recipe());
 
-    mockMvc.perform(get("/recipe/show/1")).andExpect(status().isOk())
+    mockMvc.perform(get("/recipe/1/show")).andExpect(status().isOk())
         .andExpect(view().name("recipe/show"));
+  }
+
+  @Test
+  void testMockMvcSaveOrUpdate() throws Exception{
+    RecipeCommand recipeCommand = new RecipeCommand();
+    recipeCommand.setId(1L);
+    when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+    mockMvc.perform(post("/recipe"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/recipe/1/show"));
+  }
+
+  @Test
+  void testNewRecipe() throws Exception {
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+    mockMvc.perform(get("/recipe/new"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("recipe/recipeform"));
   }
 
   @Test
